@@ -1,6 +1,6 @@
 <!doctype html>
-<html><head><meta charset='utf-8'><title>Edesky results (cyklo, navrh, oop)</title><script>function parseCreatedDate(value){if(!value){return null;}var d=new Date(value);if(Number.isNaN(d.getTime())){var iso = value.trim(); if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) { d = new Date(iso + 'T00:00:00Z'); } else if (/^\d{4}-\d{2}-\d{2}T/.test(iso)) { d = new Date(iso); } else { return null;}}return d;}function ageInDays(value, now){var created=parseCreatedDate(value); if(!created || Number.isNaN(created.getTime())) return null; var diff = now.getTime() - created.getTime(); return Math.max(0, Math.floor(diff / 86400000));}function toggle(id){var e=document.getElementById(id);if(e.style.display=='none'){e.style.display='table-row';}else{e.style.display='none';}}function sortTable(tableId,col){var table=document.getElementById(tableId);var tbody=table.tBodies[0];var rows=Array.from(tbody.rows).filter(r=>!r.classList.contains('hidden-text')&&!r.classList.contains('text-row'));var asc=table.dataset.asc==='true'?false:true;rows.sort((a,b)=>{var x=(a.dataset.valueForSort||a.cells[col]?.innerText||'').trim().toLowerCase();var y=(b.dataset.valueForSort||b.cells[col]?.innerText||'').trim().toLowerCase();var xn=parseFloat(x.replace(/[^0-9\.]/g,''));var yn=parseFloat(y.replace(/[^0-9\.]/g,''));if(!isNaN(xn)&&!isNaN(yn)){x=xn;y=yn;}if(x<y)return asc?-1:1; if(x>y)return asc?1:-1; return 0;});rows.forEach(r=>tbody.appendChild(r));table.dataset.asc=asc;};function refreshRecentBadges(){var now=new Date();document.querySelectorAll('tr[data-created-at]').forEach(function(row){var value=row.dataset.createdAt || row.getAttribute('data-created-at');var days=ageInDays(value, now);var badge=row.querySelector('.recent-badge');if(!badge) return;var recent = days !== null && days <= 30;badge.textContent = recent ? 'Nedávno (' + days + 'd)' : 'Starší (' + (days===null ? '—' : days + 'd') + ')';badge.classList.toggle('recent-badge', recent);badge.classList.toggle('stale-badge', !recent);row.classList.toggle('recent-row', recent);});}function filterTables(){var q=document.getElementById('filter-q').value.toLowerCase();var rsel=document.getElementById('filter-relevance').value;var recentOnly=document.getElementById('filter-recent').checked;var tables=document.querySelectorAll('table.sortable');tables.forEach(table=>{Array.from(table.tBodies[0].rows).forEach(row=>{if(row.classList.contains('hidden-text')||row.classList.contains('text-row')) return;var text=(row.dataset.title||'')+' '+(row.dataset.text||'')+' '+(row.dataset.keywords||'')+' '+(row.dataset.attachment||'');var rel=(row.dataset.relevance||'').toLowerCase();var createdAt=row.dataset.createdAt || row.getAttribute('data-created-at');var days=ageInDays(createdAt, new Date());var recent = days !== null && days <= 30;var ok=true; if(q && text.toLowerCase().indexOf(q)===-1) ok=false; if(rsel==='true'&&rel!=='true') ok=false; if(rsel==='false'&&rel!=='false') ok=false; if(recentOnly && !recent) ok=false; row.style.display=ok?'':'none';var textRowId=row.dataset.textRowId;if(textRowId){var textRow=document.getElementById(textRowId);if(textRow){textRow.style.display='none';}}});});}document.addEventListener('DOMContentLoaded', function(){refreshRecentBadges(); filterTables();});</script><style>body{font-family:Segoe UI,Arial,sans-serif;background:#f4f6fa;color:#1f1f1f;margin:0;padding:20px;}h1,h2{font-family:Inter,Segoe UI,Arial,sans-serif;}table{width:100%;border-collapse:collapse;margin-bottom:20px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.08);}th,td{border:1px solid #d6dde6;padding:8px;text-align:left;}th{background:#1f497d;color:#fff;cursor:pointer;position:relative;}th:hover{background:#16406b;}tr:nth-child(even){background:#f9fbff;}tr.recent-row{background:#ebfff5;border-left:4px solid #1fa76b;}button{background:#1f4e79;color:#fff;border:none;border-radius:4px;padding:5px 9px;cursor:pointer;}button:hover{background:#12325a;} .controls{margin:0 0 10px;display:flex;gap:8px;flex-wrap:wrap;} .controls input,.controls select{padding:6px 8px;border-radius:4px;border:1px solid #ccc;} .recent-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#dff7ea;color:#0f6b42;margin-left:8px;} .stale-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#eef1f6;color:#53637d;margin-left:8px;}pre{background:#eef3ff;border:1px solid #cdd5e8;padding:10px;border-radius:5px;white-space:pre-wrap;word-break:break-word;}</style></head><body><h1>Edesky results (cyklo, navrh, oop) — generated 2026-11-12T11:58:32.353676+00:00Z</h1>
-<div class="controls"><label>Filtr text: <input id="filter-q" type="text" oninput="filterTables()" placeholder="hledat..." /></label><label>Relevance: <select id="filter-relevance" onchange="filterTables()"><option value="all">vše</option><option value="true">jen true</option><option value="false">jen false</option></select></label><label><input id="filter-recent" type="checkbox" onchange="filterTables()" /> jen posledních 30 dní</label></div><h2>Dashboard 109 Praha 1</h2>
+<html><head><meta charset='utf-8'><title>Edesky results (cyklo, navrh, oop)</title><script>function parseCreatedDate(value){if(!value){return null;}var d=new Date(value);if(Number.isNaN(d.getTime())){var iso = value.trim(); if (/^\d{4}-\d{2}-\d{2}$/.test(iso)) { d = new Date(iso + 'T00:00:00Z'); } else if (/^\d{4}-\d{2}-\d{2}T/.test(iso)) { d = new Date(iso); } else { return null;}}return d;}function ageInDays(value, now){var created=parseCreatedDate(value); if(!created || Number.isNaN(created.getTime())) return null; var diff = now.getTime() - created.getTime(); return Math.max(0, Math.floor(diff / 86400000));}function toggle(id){var e=document.getElementById(id);if(e.style.display=='none'){e.style.display='table-row';}else{e.style.display='none';}}function sortTable(tableId,col){var table=document.getElementById(tableId);var tbody=table.tBodies[0];var rows=Array.from(tbody.rows).filter(r=>!r.classList.contains('hidden-text')&&!r.classList.contains('text-row'));var asc=table.dataset.asc==='true'?false:true;rows.sort((a,b)=>{var x=(a.dataset.valueForSort||a.cells[col]?.innerText||'').trim().toLowerCase();var y=(b.dataset.valueForSort||b.cells[col]?.innerText||'').trim().toLowerCase();var xn=parseFloat(x.replace(/[^0-9\.]/g,''));var yn=parseFloat(y.replace(/[^0-9\.]/g,''));if(!isNaN(xn)&&!isNaN(yn)){x=xn;y=yn;}if(x<y)return asc?-1:1; if(x>y)return asc?1:-1; return 0;});rows.forEach(r=>tbody.appendChild(r));table.dataset.asc=asc;};function refreshRecentBadges(){var now=new Date();document.querySelectorAll('tr[data-created-at]').forEach(function(row){var value=row.dataset.createdAt || row.getAttribute('data-created-at');var days=ageInDays(value, now);var badge=row.querySelector('.recent-badge');if(!badge) return;var recent = days !== null && days <= 30;var rel=(row.dataset.relevance||'').toLowerCase();badge.textContent = recent ? 'Nedávno (' + days + 'd)' : 'Starší (' + (days===null ? '—' : days + 'd') + ')';badge.classList.toggle('recent-badge', recent);badge.classList.toggle('stale-badge', !recent);row.classList.toggle('recent-row', recent && rel === 'true');});}function filterTables(){var q=document.getElementById('filter-q').value.toLowerCase();var rsel=document.getElementById('filter-relevance').value;var recentOnly=document.getElementById('filter-recent').checked;var tables=document.querySelectorAll('table.sortable');tables.forEach(table=>{Array.from(table.tBodies[0].rows).forEach(row=>{if(row.classList.contains('hidden-text')||row.classList.contains('text-row')) return;var text=(row.dataset.title||'')+' '+(row.dataset.text||'')+' '+(row.dataset.keywords||'')+' '+(row.dataset.attachment||'');var rel=(row.dataset.relevance||'').toLowerCase();var createdAt=row.dataset.createdAt || row.getAttribute('data-created-at');var days=ageInDays(createdAt, new Date());var recent = days !== null && days <= 30;var ok=true; if(q && text.toLowerCase().indexOf(q)===-1) ok=false; if(rsel==='true'&&rel!=='true') ok=false; if(rsel==='false'&&rel!=='false') ok=false; if(recentOnly && !recent) ok=false; row.style.display=ok?'':'none';var textRowId=row.dataset.textRowId;if(textRowId){var textRow=document.getElementById(textRowId);if(textRow){textRow.style.display='none';}}});});}document.addEventListener('DOMContentLoaded', function(){refreshRecentBadges(); filterTables();});</script><style>body{font-family:Segoe UI,Arial,sans-serif;background:#f4f6fa;color:#1f1f1f;margin:0;padding:20px;}h1,h2{font-family:Inter,Segoe UI,Arial,sans-serif;}table{width:100%;border-collapse:collapse;margin-bottom:20px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.08);}th,td{border:1px solid #d6dde6;padding:8px;text-align:left;}th{background:#1f497d;color:#fff;cursor:pointer;position:relative;}th:hover{background:#16406b;}tr:nth-child(even){background:#f9fbff;}tr.recent-row[data-relevance='true']{background:#ebfff5;border-left:4px solid #1fa76b;}button{background:#1f4e79;color:#fff;border:none;border-radius:4px;padding:5px 9px;cursor:pointer;}button:hover{background:#12325a;} .controls{margin:0 0 10px;display:flex;gap:8px;flex-wrap:wrap;} .controls input,.controls select{padding:6px 8px;border-radius:4px;border:1px solid #ccc;} .recent-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#dff7ea;color:#0f6b42;margin-left:8px;} .stale-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#eef1f6;color:#53637d;margin-left:8px;}pre{background:#eef3ff;border:1px solid #cdd5e8;padding:10px;border-radius:5px;white-space:pre-wrap;word-break:break-word;}</style></head><body><h1>Edesky results (cyklo, navrh, oop) — generated 2026-11-12T14:21:34.185522+00:00Z</h1>
+<div class="controls"><label>Filtr text: <input id="filter-q" type="text" oninput="filterTables()" placeholder="hledat..." /></label><label>Relevance: <select id="filter-relevance" onchange="filterTables()"><option value="all">vše</option><option value="true">jen true</option><option value="false">jen false</option></select></label><label><input id="filter-recent" type="checkbox" onchange="filterTables()" checked /> jen posledních 30 dní</label></div><h2>Dashboard 109 Praha 1</h2>
 <table id="table-109" class="sortable" data-asc="false" border=1 cellpadding=6>
 <tr><th onclick="sortTable('table-109',0)">Datum vytvoření 🔽</th><th onclick="sortTable('table-109',1)">Edesky ID</th><th onclick="sortTable('table-109',2)">Název zápisu</th><th onclick="sortTable('table-109',3)">Vyhledaná klíčová slova</th><th onclick="sortTable('table-109',4)">Relevantní pro cyklistiku</th><th onclick="sortTable('table-109',5)">Nalezené výrazy</th><th onclick="sortTable('table-109',6)">Příloha</th><th onclick="sortTable('table-109',7)">Text přílohy</th><th>Odkaz</th></tr>
 <tr style="font-weight:bold" data-created-at="2026-02-13 14:56:54 +0100" data-relevance="false" data-text="003 - vv oop st př - 1/2 maraton - 28.03.2026 
@@ -1450847,98 +1450847,6 @@ OUIUARIdOp
 eaeidn
 
 </pre><br><button onclick="toggle('text-1043-27543656')">Zpět</button></td></tr>
-<tr style="font-weight:bold" data-created-at="2026-06-23 00:40:17 +0200" data-relevance="false" data-text="mš vodochody návrh rozpočtu na rok 2026 
-mateřská škola vodochody
-školská 59, vodochody
-email: info©emsvodochody.cz
-tel.: 775 262 628
-návrh rozpočtu na 01-12/2026
-náklady: 2026
-oon 10 000,00
-služby pošt 1 500,00
-hračky, pomůcky, knihy, tisk 46 000,00
-ddhm 13 300,00
-nákup materiálu 0,00
-myčka 9 200,00
-telefony 5 000,00
-ojištění organizace 11 000,00
-služby - čištění koberců,... 8 500,00
-drobné opravy 0,00
-cestovné 2 000,00
-kancel. potřeby 17 000,00
-tonery 15 000,00
-školka v mobilu 6 500,00
-čistící prostředky 10 000,00
-vzdělávání 20 000,00
-rozvoz jídel 54 000,00
-investice jistina 7 000,00
-nepedag.prac.(hr. mzda, odvody odměny)
-hospodářka 1 272,300,00
-hospodářka 2 272,300,00
-učetní (dpp) 142,500,00
-onivy 16,300,00
-celkem 939,400,00
-mš vodochody žádá obec vodochody o schválení rozpočtu na rok 2026
-a převedení finančních prostředků na číslo účtu:          /5500
-ve vodochodech dne 8.10.2025 matořská eko. -k
-školská 9:
-(0 69 vodochody
-mgr. renata jarošová, ředitelka mš %
-d raz ičo: 07227752
-vybvělě 5; z t : -gf
-ů „ab ea
-/, dan
-v 4 mu 2 e p ——-
-xno:
-c ee (a
-
-" data-title="MŠ Vodochody Návrh rozpočtu na rok 2026" data-keywords="navrh" data-attachment="MŠ Vodochody Návrh rozpočtu na rok 2026" data-text-row-id="text-1043-27955778"><td>2026-06-23 00:40:17 +0200</td><td>27955778</td><td>MŠ Vodochody Návrh rozpočtu na rok 2026<span class='recent-badge'>Nedávno</span></td><td>navrh</td><td>false</td><td></td><td>MŠ Vodochody Návrh rozpočtu na rok 2026</td><td><button onclick="toggle('text-1043-27955778')">Zobrazit</button></td><td><a href="https://edesky.cz/dokument/27955778">odkaz</a></td></tr>
-<tr id="text-1043-27955778" class="text-row" style="display:none"><td colspan="9"><pre>
-Mateřská škola Vodochody
-Školská 59, Vodochody
-Email: info©emsvodochody.cz
-tel.: 775 262 628
-Návrh rozpočtu na 01-12/2026
-Náklady: 2026
-OON 10 000,00
-služby pošt 1 500,00
-hračky, pomůcky, knihy, tisk 46 000,00
-DDHM 13 300,00
-nákup materiálu 0,00
-myčka 9 200,00
-telefony 5 000,00
-ojištění organizace 11 000,00
-služby - čištění koberců,... 8 500,00
-drobné opravy 0,00
-cestovné 2 000,00
-kancel. Potřeby 17 000,00
-tonery 15 000,00
-školka v mobilu 6 500,00
-čistící prostředky 10 000,00
-vzdělávání 20 000,00
-rozvoz jídel 54 000,00
-investice jistina 7 000,00
-nepedag.prac.(hr. mzda, odvody odměny)
-hospodářka 1 272,300,00
-hospodářka 2 272,300,00
-učetní (DPP) 142,500,00
-ONIVY 16,300,00
-CELKEM 939,400,00
-MŠ Vodochody žádá obec Vodochody o schválení rozpočtu na rok 2026
-a převedení finančních prostředků na číslo účtu:          /5500
-Ve Vodochodech dne 8.10.2025 Matořská Eko. -k
-Školská 9:
-(0 69 Vodochody
-Mgr. Renata Jarošová, ředitelka MŠ %
-d raz IČO: 07227752
-Vybvělě 5; Z T : -GF
-Ů „AB EA
-/, DAN
-V 4 MU 2 e P ——-
-XNO:
-C ee (a
-
-</pre><br><button onclick="toggle('text-1043-27955778')">Zpět</button></td></tr>
 <tr style="font-weight:bold" data-created-at="2026-06-23 00:40:18 +0200" data-relevance="false" data-text="dso dolní povltaví_ návrh rozpočtu na rok 2026 
 pražská 18, máslovice, ičo 71225951
 položka
@@ -1583397,6 +1583305,216 @@ Rozdíl:  výnosy - náklady
 Střednědobý výhled rozpočtu 2025 - 2029
 
 </pre><br><button onclick="toggle('text-1043-39153124')">Zpět</button></td></tr>
+<tr style="font-weight:bold" data-created-at="2026-11-12 14:50:19 +0100" data-relevance="false" data-text="návrh rozpočtu na rok 2027 - svazek obcí region jih 
+|
+wez38(nos
+|
+je:*
+|
+-=p
+9toctt&amp;#39;ot
+x
+oufaoj3e1d7
+2x£6&amp;#39;9b659£-
+jnez/b208eg£
+m0098tsg4
+2m0&amp;#39;287s07-
+2m£6&amp;#39;9gb659e-
+2m£7&amp;quot;bl0bes€2m0098tst2x0487soz-
+jupaodubuj
+oubjopojieny
+áubuz
+st8
+iupaojubuis
+7x£6&amp;quot;9sb659£
+dyez&amp;quot;plobese-2x0“098tsp-?m0&amp;quot;487soz
+m04oujuzbya-1opies
+dy8965980zjmle“6lt028t2x0&amp;quot;092s808£|2m0/£9ttzt9
+w9x|93slepáa
+2m0&amp;#39;z9tpot
+px0/791pot
+2x000o£t2x0&amp;#39;06t69
+olepánsnouep-aíepáa9uz9
+xxs
+69
+2x0&amp;#39;00sx8d&amp;#39;8tt+
+2%0&amp;#39;00s2x0&amp;#39;00s
+ayjejdod
+juaoyueg
+-a[epánsuz9g
+xxg
+ote9
+2xbs&amp;#39;le6z08sz
+2x£0&amp;#39;t96egezt
+2x0020569€2moeto£86z
+agaexs£ájeu&amp;quot;aaopng
+tet9
+2x8s/2£6z08sz
+dy£0&amp;#39;te6l942t2m0&amp;#39;0£069€£pm0/£0262tp
+w9x|3díepán
+oaojejidey
+kx9
+2x0&amp;#39;09g02tt
+2x92/le6e6t
+2x0&amp;#39;0900962x0098tbet
+olepánsuzag
+kxs
+epoa
+puvj
+otez
+alepán
+»xtg“9t8b/0€jxpt“sotzezstda006£es£e[2x0&amp;quot;0s+97£9
+waxje3aulid
+2xis9t0s9067
+2mouz8ttezsl
+2x0&amp;#39;000s8te2x0&amp;#39;00os8£
+udj93
+ájajsup)dps
+xky
+2x0&amp;#39;0zi
+2xbo&amp;#39;8t6
+2000z2x0“00z
+axoan-dejado
+uorupueuyzaulig
+ote9
+2x0&amp;#39;06t89t
+2x0&amp;#39;0
+2x0&amp;#39;06t89t2m0&amp;#39;0stvyz
+myaleu
+ulaleuojd-edoabuj
+otez
+2m0&amp;#39;0t£89t
+2xp08t6
+?x006£89t2%0&amp;#39;0sp924z
+w53áwfijdjaoubdonoz
+auliud
+9č02zte
+9t0c0tte
+1920704
+aua|pau3s
+by
+abzbn
+sy!ugpujpaoydip|syiudpijipaoajrapo
+xnpodzoj
+iuaujd30
+y
+nb0dzoj
+iuau|d
+9707x01eu130dzoy
+uafn-
+hit
+nojdjy
+id40
+nazvas
+-z0z04eu
+ja30dzoy
+
+" data-title="Návrh rozpočtu na rok 2027 - Svazek obcí Region Jih" data-keywords="navrh" data-attachment="Zde ke stažení" data-text-row-id="text-1043-39177616"><td>2026-11-12 14:50:19 +0100</td><td>39177616</td><td>Návrh rozpočtu na rok 2027 - Svazek obcí Region Jih<span class='recent-badge'>Nedávno</span></td><td>navrh</td><td>false</td><td></td><td>Zde ke stažení</td><td><button onclick="toggle('text-1043-39177616')">Zobrazit</button></td><td><a href="https://edesky.cz/dokument/39177616">odkaz</a></td></tr>
+<tr id="text-1043-39177616" class="text-row" style="display:none"><td colspan="9"><pre>
+|
+Wez38(NOS
+|
+jE:*
+|
+-=p
+9TOCTT&amp;#39;OT
+X
+ouFaoJ3e1d7
+2X£6&amp;#39;9b659£-
+JNEZ/b208EG£
+M0098TSG4
+2M0&amp;#39;287S07-
+2M£6&amp;#39;9Gb659E-
+2M£7&amp;quot;bL0BES€2M0098TSt2X0487SOZ-
+JUPAODUBUJ
+OUBJOPOJIENY
+ÁUBUZ
+sT8
+IUPAOJUBUIS
+7x£6&amp;quot;9Sb659£
+DYEZ&amp;quot;PLOBESE-2X0“098TSp-?M0&amp;quot;487SOZ
+M04OUJUZBYA-1OPIES
+DY8965980ZJMLE“6LT028T2X0&amp;quot;092S808£|2M0/£9TTZT9
+W9X|93SlepÁA
+2M0&amp;#39;Z9TpOT
+PX0/791poT
+2X000O£T2x0&amp;#39;06T69
+olepÁnsnouep-aÍepÁA9uz9
+XXS
+69
+2x0&amp;#39;00SX8d&amp;#39;8tT+
+2%0&amp;#39;00S2X0&amp;#39;00S
+Ayjejdod
+juaoyueg
+-a[epÁnsuz9g
+XXG
+OTE9
+2XBS&amp;#39;LE6Z08SZ
+2X£0&amp;#39;T96EGEZT
+2X0020569€2MOETO£86Z
+Agaexs£Ájeu&amp;quot;Aaopng
+TeT9
+2X8S/2£6Z08SZ
+DY£0&amp;#39;TE6L942T2M0&amp;#39;0£069€£PM0/£0262Tp
+W9x|3dÍepÁn
+oaojejidey
+KX9
+2X0&amp;#39;09G02TT
+2X92/LE6E6T
+2X0&amp;#39;0900962X0098tbET
+olepÁnsuzag
+KXS
+EpoA
+PUVJ
+OTEZ
+alepÁn
+»XTG“9T8b/0€JXPT“SOTZEZSTDA006£ES£E[2X0&amp;quot;0S+97£9
+waxje3Aulid
+2XIS9T0S9067
+2MOUZ8TTEZSL
+2X0&amp;#39;000S8TE2X0&amp;#39;00OS8£
+UDJ93
+ÁJajsuP)DPS
+XKY
+2X0&amp;#39;0ZI
+2XbO&amp;#39;8T6
+2000Z2X0“00Z
+Axoan-Dejado
+uorupueuyzAulig
+OTE9
+2x0&amp;#39;06T89T
+2x0&amp;#39;0
+2X0&amp;#39;06T89T2M0&amp;#39;0Stvyz
+myaleu
+ulaleuojd-EDOABUJ
+OTEZ
+2M0&amp;#39;0T£89T
+2XP08T6
+?X006£89T2%0&amp;#39;0Sp924Z
+W53ÁwfijdJAOUBDONOZ
+Auliud
+9č02ZTE
+9T0C0TTE
+1920704
+Aua|PAu3s
+by
+ABZBN
+SY!ugpujPAOYDIP|SYIUDPIJIPAOAJRAPO
+XNpodzoJ
+iuaujd30
+y
+NB0dzoJ
+IUaU|d
+9707X01eu130dzoy
+UAFN-
+HIT
+NOJDJY
+ID40
+NAZVAS
+-Z0Z04eu
+ja30dzoy
+
+</pre><br><button onclick="toggle('text-1043-39177616')">Zpět</button></td></tr>
 </table>
 <h2>Dashboard 1044 Okres Praha-západ</h2>
 <table id="table-1044" class="sortable" data-asc="false" border=1 cellpadding=6>
