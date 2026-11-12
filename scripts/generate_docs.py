@@ -131,8 +131,8 @@ def generate(dash_from=59, dash_to=59, api_key=None, keywords=None, created_from
         if kw_title:
             f.write(f" ({kw_title})")
         f.write("</title>")
-        f.write("<script>function toggle(id){var e=document.getElementById(id);if(e.style.display=='none'){e.style.display='table-row';}else{e.style.display='none';}}function sortTable(tableId,col){var table=document.getElementById(tableId);var tbody=table.tBodies[0];var rows=Array.from(tbody.rows).filter(r=>!r.classList.contains('hidden-text'));var asc=table.dataset.asc==='true'?false:true;rows.sort((a,b)=>{var x=a.cells[col].innerText.trim().toLowerCase();var y=b.cells[col].innerText.trim().toLowerCase();var xn=parseFloat(x.replace(/[^0-9\.]/g,''));var yn=parseFloat(y.replace(/[^0-9\.]/g,''));if(!isNaN(xn)&&!isNaN(yn)){x=xn;y=yn;}if(x<y)return asc?-1:1; if(x>y)return asc?1:-1; return 0;});rows.forEach(r=>tbody.appendChild(r));table.dataset.asc=asc;};function filterTables(){var q=document.getElementById('filter-q').value.toLowerCase();var rsel=document.getElementById('filter-relevance').value;var tables=document.querySelectorAll('table.sortable');tables.forEach(table=>{Array.from(table.tBodies[0].rows).forEach(row=>{if(row.classList.contains('hidden-text'))return;var text=(row.cells[2]?.innerText||'')+' '+(row.cells[7]?.innerText||'')+' '+(row.cells[3]?.innerText||'');var rel=(row.cells[5]?.innerText||'').toLowerCase();var ok=true; if(q && text.toLowerCase().indexOf(q)===-1) ok=false; if(rsel==='true'&&rel!=='true') ok=false; if(rsel==='false'&&rel!=='false') ok=false; row.style.display=ok?'':'none';});});}</script>")
-        f.write("<style>body{font-family:Segoe UI,Arial,sans-serif;background:#f4f6fa;color:#1f1f1f;margin:0;padding:20px;}h1,h2{font-family:Inter,Segoe UI,Arial,sans-serif;}table{width:100%;border-collapse:collapse;margin-bottom:20px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.08);}th,td{border:1px solid #d6dde6;padding:8px;text-align:left;}th{background:#1f497d;color:#fff;cursor:pointer;position:relative;}th:hover{background:#16406b;}tr:nth-child(even){background:#f9fbff;}button{background:#1f4e79;color:#fff;border:none;border-radius:4px;padding:5px 9px;cursor:pointer;}button:hover{background:#12325a;} .controls{margin:0 0 10px;display:flex;gap:8px;flex-wrap:wrap;} .controls input,.controls select{padding:6px 8px;border-radius:4px;border:1px solid #ccc;}pre{background:#eef3ff;border:1px solid #cdd5e8;padding:10px;border-radius:5px;white-space:pre-wrap;word-break:break-word;}</style>")
+        f.write("<script>function parseCreatedDate(value){if(!value){return null;}var d=new Date(value);if(Number.isNaN(d.getTime())){var iso = value.trim(); if (/^\\d{4}-\\d{2}-\\d{2}$/.test(iso)) { d = new Date(iso + 'T00:00:00Z'); } else if (/^\\d{4}-\\d{2}-\\d{2}T/.test(iso)) { d = new Date(iso); } else { return null;}}return d;}function ageInDays(value, now){var created=parseCreatedDate(value); if(!created || Number.isNaN(created.getTime())) return null; var diff = now.getTime() - created.getTime(); return Math.max(0, Math.floor(diff / 86400000));}function toggle(id){var e=document.getElementById(id);if(e.style.display=='none'){e.style.display='table-row';}else{e.style.display='none';}}function sortTable(tableId,col){var table=document.getElementById(tableId);var tbody=table.tBodies[0];var rows=Array.from(tbody.rows).filter(r=>!r.classList.contains('hidden-text')&&!r.classList.contains('text-row'));var asc=table.dataset.asc==='true'?false:true;rows.sort((a,b)=>{var x=(a.dataset.valueForSort||a.cells[col]?.innerText||'').trim().toLowerCase();var y=(b.dataset.valueForSort||b.cells[col]?.innerText||'').trim().toLowerCase();var xn=parseFloat(x.replace(/[^0-9\\.]/g,''));var yn=parseFloat(y.replace(/[^0-9\\.]/g,''));if(!isNaN(xn)&&!isNaN(yn)){x=xn;y=yn;}if(x<y)return asc?-1:1; if(x>y)return asc?1:-1; return 0;});rows.forEach(r=>tbody.appendChild(r));table.dataset.asc=asc;};function refreshRecentBadges(){var now=new Date();document.querySelectorAll('tr[data-created-at]').forEach(function(row){var value=row.dataset.createdAt || row.getAttribute('data-created-at');var days=ageInDays(value, now);var badge=row.querySelector('.recent-badge');if(!badge) return;var recent = days !== null && days <= 30;badge.textContent = recent ? 'Nedávno (' + days + 'd)' : 'Starší (' + (days===null ? '—' : days + 'd') + ')';badge.classList.toggle('recent-badge', recent);badge.classList.toggle('stale-badge', !recent);row.classList.toggle('recent-row', recent);});}function filterTables(){var q=document.getElementById('filter-q').value.toLowerCase();var rsel=document.getElementById('filter-relevance').value;var recentOnly=document.getElementById('filter-recent').checked;var tables=document.querySelectorAll('table.sortable');tables.forEach(table=>{Array.from(table.tBodies[0].rows).forEach(row=>{if(row.classList.contains('hidden-text')||row.classList.contains('text-row')) return;var text=(row.dataset.title||'')+' '+(row.dataset.text||'')+' '+(row.dataset.keywords||'')+' '+(row.dataset.attachment||'');var rel=(row.dataset.relevance||'').toLowerCase();var createdAt=row.dataset.createdAt || row.getAttribute('data-created-at');var days=ageInDays(createdAt, new Date());var recent = days !== null && days <= 30;var ok=true; if(q && text.toLowerCase().indexOf(q)===-1) ok=false; if(rsel==='true'&&rel!=='true') ok=false; if(rsel==='false'&&rel!=='false') ok=false; if(recentOnly && !recent) ok=false; row.style.display=ok?'':'none';var textRowId=row.dataset.textRowId;if(textRowId){var textRow=document.getElementById(textRowId);if(textRow){textRow.style.display='none';}}});});}document.addEventListener('DOMContentLoaded', function(){refreshRecentBadges(); filterTables();});</script>")
+        f.write("<style>body{font-family:Segoe UI,Arial,sans-serif;background:#f4f6fa;color:#1f1f1f;margin:0;padding:20px;}h1,h2{font-family:Inter,Segoe UI,Arial,sans-serif;}table{width:100%;border-collapse:collapse;margin-bottom:20px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,0.08);}th,td{border:1px solid #d6dde6;padding:8px;text-align:left;}th{background:#1f497d;color:#fff;cursor:pointer;position:relative;}th:hover{background:#16406b;}tr:nth-child(even){background:#f9fbff;}tr.recent-row{background:#ebfff5;border-left:4px solid #1fa76b;}button{background:#1f4e79;color:#fff;border:none;border-radius:4px;padding:5px 9px;cursor:pointer;}button:hover{background:#12325a;} .controls{margin:0 0 10px;display:flex;gap:8px;flex-wrap:wrap;} .controls input,.controls select{padding:6px 8px;border-radius:4px;border:1px solid #ccc;} .recent-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#dff7ea;color:#0f6b42;margin-left:8px;} .stale-badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:11px;font-weight:700;background:#eef1f6;color:#53637d;margin-left:8px;}pre{background:#eef3ff;border:1px solid #cdd5e8;padding:10px;border-radius:5px;white-space:pre-wrap;word-break:break-word;}</style>")
         f.write("</head><body>")
         # use timezone-aware UTC timestamp to avoid deprecation warnings
         f.write(f"<h1>Edesky results")
@@ -145,7 +145,7 @@ def generate(dash_from=59, dash_to=59, api_key=None, keywords=None, created_from
         for r in rows:
             groups.setdefault((r['dashboard'], r.get('dashboard_name', '')), []).append(r)
         # filter controls
-        f.write('<div class="controls"><label>Filtr text: <input id="filter-q" type="text" oninput="filterTables()" placeholder="hledat..." /></label><label>Relevance: <select id="filter-relevance" onchange="filterTables()"><option value="all">vše</option><option value="true">jen true</option><option value="false">jen false</option></select></label></div>')
+        f.write('<div class="controls"><label>Filtr text: <input id="filter-q" type="text" oninput="filterTables()" placeholder="hledat..." /></label><label>Relevance: <select id="filter-relevance" onchange="filterTables()"><option value="all">vše</option><option value="true">jen true</option><option value="false">jen false</option></select></label><label><input id="filter-recent" type="checkbox" onchange="filterTables()" /> jen posledních 30 dní</label></div>')
         # sort dashboard keys numerically
         for (did, dname) in sorted(groups.keys(), key=lambda x: x[0]):
             f.write(f"<h2>Dashboard {did} {dname}</h2>\n")
@@ -153,12 +153,6 @@ def generate(dash_from=59, dash_to=59, api_key=None, keywords=None, created_from
             f.write(f"<tr><th onclick=\"sortTable('table-{did}',0)\">Datum vytvoření 🔽</th><th onclick=\"sortTable('table-{did}',1)\">Edesky ID</th><th onclick=\"sortTable('table-{did}',2)\">Název zápisu</th><th onclick=\"sortTable('table-{did}',3)\">Vyhledaná klíčová slova</th><th onclick=\"sortTable('table-{did}',4)\">Relevantní pro cyklistiku</th><th onclick=\"sortTable('table-{did}',5)\">Nalezené výrazy</th><th onclick=\"sortTable('table-{did}',6)\">Příloha</th><th onclick=\"sortTable('table-{did}',7)\">Text přílohy</th><th>Odkaz</th></tr>\n")
             # sort rows by created date string
             for r in sorted(groups[(did, dname)], key=lambda r: r['created_at']):
-                is_new = r['edesky_id'] not in old_entries
-                if is_new:
-                    f.write('<tr style="font-weight:bold">')
-                else:
-                    f.write("<tr>")
-
                 found_keywords = sorted(r.get('found_keywords', []))
                 found_text = ", ".join(found_keywords)
                 # determine cycling relevance from text/title
@@ -173,17 +167,32 @@ def generate(dash_from=59, dash_to=59, api_key=None, keywords=None, created_from
                 found_text_keywords = [term for term in cycling_terms if term in text_to_check]
                 found_text_terms = ", ".join(found_text_keywords)
                 cycling_relevant = len(found_text_keywords) > 0
+                row_id = f"text-{did}-{r['edesky_id']}" if r.get('attachment_text') else ""
+                row_attrs = (
+                    f' data-created-at="{escape_html(r["created_at"])}"'
+                    f' data-relevance="{"true" if cycling_relevant else "false"}"'
+                    f' data-text="{escape_html(text_to_check)}"'
+                    f' data-title="{escape_html(r["title"])}"'
+                    f' data-keywords="{escape_html(found_text)}"'
+                    f' data-attachment="{escape_html(r["attachment"])}"'
+                    f' data-text-row-id="{row_id}"'
+                )
+
+                is_new = r['edesky_id'] not in old_entries
+                if is_new:
+                    f.write(f'<tr style="font-weight:bold"{row_attrs}>')
+                else:
+                    f.write(f'<tr{row_attrs}>')
 
                 f.write(f"<td>{escape_html(r['created_at'])}</td>")
                 f.write(f"<td>{escape_html(r['edesky_id'])}</td>")
-                f.write(f"<td>{escape_html(r['title'])}</td>")
+                f.write(f"<td>{escape_html(r['title'])}<span class='recent-badge'>Nedávno</span></td>")
                 f.write(f"<td>{escape_html(found_text)}</td>")
                 f.write(f"<td>{'true' if cycling_relevant else 'false'}</td>")
                 f.write(f"<td>{escape_html(found_text_terms if cycling_relevant else '')}</td>")
                 f.write(f"<td>{escape_html(r['attachment'])}</td>")
                 # text toggle button if available
                 if r.get('attachment_text'):
-                    row_id = f"text-{did}-{r['edesky_id']}"
                     f.write(f"<td><button onclick=\"toggle('{row_id}')\">Zobrazit</button></td>")
                 else:
                     f.write("<td></td>")
@@ -192,7 +201,7 @@ def generate(dash_from=59, dash_to=59, api_key=None, keywords=None, created_from
                 # hidden text row
                 if r.get('attachment_text'):
                     highlighted = highlight_text(r['attachment_text'], found_text_keywords)
-                    f.write(f"<tr id=\"{row_id}\" style=\"display:none\"><td colspan=\"9\"><pre>{highlighted}</pre><br><button onclick=\"toggle('{row_id}')\">Zpět</button></td></tr>\n")
+                    f.write(f"<tr id=\"{row_id}\" class=\"text-row\" style=\"display:none\"><td colspan=\"9\"><pre>{highlighted}</pre><br><button onclick=\"toggle('{row_id}')\">Zpět</button></td></tr>\n")
             f.write("</table>\n")
         f.write("</body>")
         # insert pagination warning paragraph if any

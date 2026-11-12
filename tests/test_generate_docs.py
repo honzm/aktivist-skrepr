@@ -156,6 +156,29 @@ def test_generate_with_text_attachment(monkeypatch, tmp_path):
     assert "<mark>cyklo</mark>" in html
 
 
+def test_generate_adds_relevance_and_recent_metadata(monkeypatch, tmp_path):
+    generate_docs.OUT_DIR = str(tmp_path)
+    monkeypatch.setattr(generate_docs, "fetch_dashboards", lambda key: [])
+    monkeypatch.setattr(generate_docs, "filter_dashboards_by_name", lambda d, nf: [])
+
+    def fake_fetch(did, api_key, keywords=None, created_from=None):
+        return [{
+            "edesky_id": "7",
+            "created_at": "2026-11-10",
+            "name": "Doc",
+            "edesky_url": "u",
+            "attachments": [{"name": "att", "text": "cyklo stezka"}],
+        }]
+
+    monkeypatch.setattr(generate_docs, "fetch_documents_for_dashboard", fake_fetch)
+    generate_docs.generate(dash_from=60, dash_to=60, api_key="key", keywords="cyklo")
+    html = (tmp_path / "index.html").read_text(encoding="utf-8")
+    assert "data-relevance=\"true\"" in html
+    assert "data-created-at=\"2026-11-10\"" in html
+    assert "recent-badge" in html
+    assert "row.dataset.relevance" in html
+
+
 def test_pagination_warning_display(monkeypatch, tmp_path):
     # simulate a dashboard returning multiple pages
     generate_docs.OUT_DIR = str(tmp_path)
