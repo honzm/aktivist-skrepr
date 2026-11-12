@@ -66,7 +66,7 @@ def generate(dash_from=59, dash_to=59, api_key=None, keywords=None, created_from
     # parse keywords into list; supply default set if none providedhi
     if keywords is None:
         # reduced default set per user request
-        kw_list = ["cyklo", "navrh"]
+        kw_list = ["cyklo", "navrh", "oop"]
     elif isinstance(keywords, str):
         kw_list = [k.strip() for k in keywords.split(",") if k.strip()]
     else:

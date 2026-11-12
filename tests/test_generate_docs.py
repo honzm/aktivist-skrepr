@@ -126,8 +126,8 @@ def test_generate_default_keywords(monkeypatch, tmp_path):
     # call generate without args; defaults should use dashboard 59
     generate_docs.generate(api_key="key")
     html = (tmp_path / "index.html").read_text(encoding="utf-8")
-    # default set should be in header title (cyklo, navrh)
-    assert "cyklo" in html and "navrh" in html
+    # default set should be in header title (cyklo, navrh, oop)
+    assert "cyklo" in html and "navrh" in html and "oop" in html.lower()
     # dashboard 59 is skipped, so there should be no fetch calls
     assert calls == []
 
