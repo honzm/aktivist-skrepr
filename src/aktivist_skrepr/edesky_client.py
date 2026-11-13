@@ -29,7 +29,7 @@ def search_documents_page(dashboard_id: int, api_key: str, keywords: str = "cykl
     Each document is a dict with selected attributes.
     """
     params = _build_params(keywords, api_key, dashboard_id, page=page, created_from=created_from)
-    resp = requests.get(BASE_URL, params=params, timeout=60)
+    resp = requests.get(BASE_URL, params=params, timeout=300)
     resp.raise_for_status()
     text = resp.text
     root = ET.fromstring(text)
@@ -92,7 +92,7 @@ def fetch_dashboards(api_key: str) -> List[Dict]:
     edesky_id.
     """
     params = {"api_key": api_key, "format": "xml"}
-    resp = requests.get(DASHBOARDS_URL, params=params, timeout=60)
+    resp = requests.get(DASHBOARDS_URL, params=params, timeout=300)
     resp.raise_for_status()
     root = ET.fromstring(resp.text)
 
